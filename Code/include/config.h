@@ -21,7 +21,7 @@
 #define BROADCASTADDR 255 // Broadcast address
 
 // L3 config
-#define NODENUMBER 1                  // Node number (1-n)
+#define NODENUMBER 2                  // Node number (1-n)
 #define MAXNODES 10                   // Maximum nodes in network
 #define ANNOUNCEMINS 1                // Availability announce interval (min)
 #define INACTIVEMINS 3                // Inactivity time needed to consider a node offline (min)
@@ -38,7 +38,7 @@
 #define WIFIENABLED 1            // Wi-Fi enabled
 #define NODENAMEOVERRIDEEN 0     // Node name override enable (ex: relay without Wi-Fi)
 #define NODENAMEOVERRIDE "Home"  // Node name override
-#define WIFISSID "LoRaMessenger" // Wi-Fi prefix (ex: LoRaMessenger 1)
+#define WIFISSID "LoRaMessengerWeb2" // Wi-Fi prefix (ex: LoRaMessenger 1)
 #define DNSPORT 53               // DNS port
 
 // Pinout

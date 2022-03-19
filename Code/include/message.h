@@ -25,4 +25,5 @@ void message_printLastN(int number);
 
 int message_checkDuplicate(uint8_t sender, uint32_t id);
 String message_getStringMessageList();
+String message_getStringMessageList_asJson();
 #endif

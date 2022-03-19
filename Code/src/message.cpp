@@ -251,9 +251,71 @@ String message_getStringMessageList()
           list += " " + String(L3_getNodeName(message_list[read_position].acks_nodes[i]));
         }
       }
+      list += "</li>";
     }
-    list += "</li>";
+    
     read_position++;
   }
+  return list;
+}
+
+
+/**
+ * @brief    Creates a string containg the message list (webserver)
+ * 
+ * @return   String message list
+ */
+String message_getStringMessageList_asJson()
+{
+  int read_position = write_index_msg;
+  int number = showmessages;
+
+  String list = "[";
+  String reciver_list="['recieved_by':";
+
+  if (number > KEEPNMESSAGES)
+    number = KEEPNMESSAGES;
+
+  if (read_position - number < 0)
+    read_position = KEEPNMESSAGES + read_position - number;
+  else
+    read_position = read_position - number;
+
+  for (int i = 0; i < number; i++)
+  {
+
+    if (read_position == KEEPNMESSAGES)
+      read_position = 0;
+
+    if (message_list[read_position].message != NULL)
+    {
+      char receiver_name[16];
+      char sender_name[16];
+
+      strcpy(receiver_name, L3_getNodeName(message_list[read_position].receiver));
+      strcpy(sender_name, L3_getNodeName(message_list[read_position].sender));
+
+      list += "{ 'sender':'" + String(sender_name) + "','receiver':'" + String(receiver_name) + "','message':'" + String(message_list[read_position].message)+"'";
+      if (message_list[read_position].acks)
+      {
+        
+        for (int i = 0; i < message_list[read_position].acks; i++)
+        {
+         
+          reciver_list += " 'reciver':'" + String(L3_getNodeName(message_list[read_position].acks_nodes[i]))+"',";
+        }
+        reciver_list+="]";
+        list+=reciver_list+"}";
+      }else{
+        list+="}";
+        }
+     
+      list += ",";
+    }
+    
+    read_position++;
+  }
+  //close the json array
+  list+="]";
   return list;
 }

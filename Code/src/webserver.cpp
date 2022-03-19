@@ -38,6 +38,8 @@ IPAddress ap_subnet(255, 255, 255, 0);
 
 // Private Functions
 String index_html();
+String index_css();
+String index_JsonMsg();
 
 // Functions
 
@@ -64,6 +66,12 @@ void webserver_init()
   });
   webServer.on("/captive-portal/api", [](AsyncWebServerRequest *request) {
     request->send(200, "text/html", index_html());
+  });
+  webServer.on("/styles.css", [](AsyncWebServerRequest *request) {
+    request->send(200, "text/css", index_css());
+  });
+  webServer.on("/api/msgs.json", [](AsyncWebServerRequest *request) {
+    request->send(200, "text/json", index_JsonMsg());
   });
   webServer.on("/rename", HTTP_POST, [](AsyncWebServerRequest *request) {
     AsyncWebParameter *p = request->getParam(0);
@@ -123,17 +131,11 @@ void webserver_loop()
 String index_html()
 {
   String html = "<!DOCTYPE html><html>"
-                "<head><title>LoRaMessenger</title>"
+                "<head>"
+                "<title>LoRaMessenger</title>"
                 "<meta name=viewport content=\"width=device-width,initial-scale=1\">"
-                "<style>article { background: #f2f2f2; padding: 1em; }"
-                "body { color: #333; font-family: Century Gothic, sans-serif; font-size: 18px; line-height: 24px; margin: 0; padding: 0; }"
-                "div { padding: 0.5em; }"
-                "h1 { margin: 0.5em 0 0 0; padding: 0; }"
-                "input { border-radius: 0; }"
-                "label { color: #333; display: block; font-style: italic; font-weight: bold; }"
-                "nav { background: #0061ff; color: #fff; display: block; font-size: 1.3em; padding: 1em; }"
-                "nav b { display: block; font-size: 1.2em; margin-bottom: 0.5em; } "
-                "textarea { width: 100%; }</style></head>"
+                "<link rel='stylesheet' href='styles.css'>"
+                "</head>"
                 "<body><nav><b>LoRaMessenger</b></nav>"
                 "<div> <form action=/rename method=post><br /><label>Node name</label>"
                 "<textarea name=nodename rows=1>" +
@@ -150,3 +152,24 @@ String index_html()
                 "<textarea name=message></textarea><br /><input type=submit value=Send></form> </div> </html>";
   return html;
 }
+
+String index_JsonMsg()
+{
+  String html = message_getStringMessageList_asJson() ;
+  return html;
+  
+}
+
+String index_css()
+{
+  String css = "article { background: #f2f2f2; padding: 1em; }"
+                "body { color: #333; font-family: Century Gothic, sans-serif; font-size: 18px; line-height: 24px; margin: 0; padding: 0; }"
+                "div { padding: 0.5em; }"
+                "h1 { margin: 0.5em 0 0 0; padding: 0; }"
+                "input { border-radius: 0; }"
+                "label { color: #333; display: block; font-style: italic; font-weight: bold; }"
+                "nav { background: #0061ff; color: #fff; display: block; font-size: 1.3em; padding: 1em; }"
+                "nav b { display: block; font-size: 1.2em; margin-bottom: 0.5em; } ";
+  return css;
+}
+
